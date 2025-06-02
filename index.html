@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Quest</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background: linear-gradient(135deg, #111, #333);
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      background-color: #222;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    h1, h2, h3 {
+      text-align: center;
+    }
+    button, input {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #0f0;
+      color: #000;
+      cursor: pointer;
+    }
+    .section {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    pre {
+      background-color: #000;
+      color: #0f0;
+      padding: 1rem;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Your Birthday Quest 🎉</h1>
+    <p>“Some code, some love, and a whole lot of adventure...”</p>
+    <button onclick="showSection('start')">💖 Let's Begin</button>
+
+    <div id="start" class="section">
+      <h2>🎽 Dress Code</h2>
+      <p>Today’s theme is: matchy & mysterious. Wear <strong>your favorite outfit</strong>.</p>
+      <p>🕘 Be ready at: <strong>9:00 AM</strong></p>
+      <button onclick="showSection('activityChoice')">Next ➡️</button>
+    </div>
+
+    <div id="activityChoice" class="section">
+      <h2>🎲 Choose Your Number</h2>
+      <p>Pick a number (1-3) to reveal your first activity!</p>
+      <button onclick="revealActivity(1)">1</button>
+      <button onclick="revealActivity(2)">2</button>
+      <button onclick="revealActivity(3)">3</button>
+      <p id="activityReveal"></p>
+      <button id="toFood" onclick="showSection('foodChoice')" style="display:none">Next ➡️</button>
+    </div>
+
+    <div id="foodChoice" class="section">
+      <h2>🍝 Lunch Time Mystery</h2>
+      <p>Pick a number (1-3) to find your meal!</p>
+      <button onclick="revealFood(1)">1</button>
+      <button onclick="revealFood(2)">2</button>
+      <button onclick="revealFood(3)">3</button>
+      <p id="foodReveal"></p>
+      <button id="toPuzzle" onclick="showSection('puzzle1')" style="display:none">Next ➡️</button>
+    </div>
+
+    <div id="puzzle1" class="section">
+      <h2>🔐 Coding Challenge 1 (Dart)</h2>
+      <pre>
+String surprise(int code) {
+  if (code == 29) {
+    return "Saturday Adventure";
+  } else if (code == 1) {
+    return "Work Day 💻";
+  } else {
+    return "Try again.";
+  }
+}</pre>
+      <p>What input gives <strong>"Saturday Adventure"</strong>?</p>
+      <input type="number" id="dartInput" />
+      <button onclick="checkDart()">Submit</button>
+      <p id="dartResult"></p>
+    </div>
+
+    <div id="puzzle2" class="section">
+      <h2>🧠 Coding Challenge 2 (JavaScript)</h2>
+      <pre>
+let x = [1, 2, 3];
+let y = x;
+y.push(4);
+
+console.log(x); // ?</pre>
+      <p>What is the output of <code>x</code>?</p>
+      <input type="text" id="jsInput" />
+      <button onclick="checkJS()">Submit</button>
+      <p id="jsResult"></p>
+    </div>
+
+    <div id="final" class="section">
+      <h2>🎁 Final Password</h2>
+      <p>What's the one word all devs know?</p>
+      <input type="text" id="finalPass" />
+      <button onclick="checkFinal()">Unlock</button>
+      <p id="finalResult"></p>
+    </div>
+  </div>
+
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_e6e8c0e03c.mp3?filename=8-bit-adventure-134318.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function revealActivity(num) {
+      const text = {
+        1: "🏎️ Karting! Get ready to race!",
+        2: "🐎 Horse Riding! Saddle up!",
+        3: "🎳 Bowling! Time to strike!"
+      };
+      document.getElementById('activityReveal').innerText = text[num];
+      document.getElementById('toFood').style.display = "block";
+    }
+
+    function revealFood(num) {
+      const text = {
+        1: "🍝 Pasta from Spacefood!",
+        2: "🍕 Pizza from Yamani!",
+        3: "🥩 Steak surprise!"
+      };
+      document.getElementById('foodReveal').innerText = text[num];
+      document.getElementById('toPuzzle').style.display = "block";
+    }
+
+    function checkDart() {
+      const val = parseInt(document.getElementById("dartInput").value);
+      const out = document.getElementById("dartResult");
+      if (val === 29) {
+        out.textContent = "✅ Great! On to the next challenge...";
+        setTimeout(() => showSection('puzzle2'), 1500);
+      } else {
+        out.textContent = "❌ Nope, think again!";
+      }
+    }
+
+    function checkJS() {
+      const val = document.getElementById("jsInput").value.replace(/\s/g, '');
+      const out = document.getElementById("jsResult");
+      if (val === "[1,2,3,4]") {
+        out.textContent = "✅ Brilliant! Now unlock the final surprise.";
+        setTimeout(() => showSection('final'), 1500);
+      } else {
+        out.textContent = "❌ Close, but not quite.";
+      }
+    }
+
+    function checkFinal() {
+      const val = document.getElementById("finalPass").value.toLowerCase();
+      const out = document.getElementById("finalResult");
+      
+      if (["build", "compile", "logic"].includes(val)) {
+        out.textContent = "✅ Unlocked! Redirecting...";
+        setTimeout(() => showSection('finalAnimation'), 2000);
+
+        out.innerHTML = "<strong>🎉 You did it! Time to get your gift and cake! 🎂</strong>";
+      } else {
+        out.textContent = "❌ Not the word I'm looking for...";
+      }
+    }
+  </script>
+
+<div id="finalAnimation" class="section">
+  <h2>🎉 You Did It!</h2>
+  <div style="text-align:center; margin-top:20px;">
+    <img src="https://media.giphy.com/media/xTiTnqUxyWbsAXq7Ju/giphy.gif" alt="Celebration" style="max-width:100%; border-radius:15px;">
+    <h3 style="margin-top: 1rem;">Your final destination awaits... 🎁</h3>
+    <p>Now let’s get that cake and see the surprise gift!</p>
+  </div>
+</div>
+</body>
+</html>
